@@ -1,30 +1,68 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import Movie from './components/Movie';
 
-const FEATURED_API =  "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04c35731a5ee918f014970082a00888b1&page=1";
-const IMG_API = "https://image.tmdb.org/t/p/w1280";
-const SEARCH_API = "https://api.themoviedb.org/3/search/movie?&api_key=04c35731a5ee918f014970082a00888b1&query=";
+const FEATURED_API =  "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=b07d0ec21b43ab79d7de58082a0b48c8&page=1";
+
+const SEARCH_API = "https://api.themoviedb.org/3/search/movie?&api_key=b07d0ec21b43ab79d7de58082a0b48c8&query=";
 
 function App() {
   const [ movies, setMovies ] = useState([]);
- 
-  useEffect(async() => {
-    const movieResp = await fetch(FEATURED_API);
-    const movieJson = await movieResp.json();
-    console.log(movieJson);
-    setMovies(movieJson);
-  },[])
+  const [ searchTerm, setSearchTerm ] = useState('');
 
+  useEffect(() => {
+    getMovies(FEATURED_API);
+  },[]
+  );
 
-  return (
-    <div className="App">
-      {movies.length > 0 && movies.map((movie) => (
-        <Movie />
-      )
-      )
+  const getMovies = (API) => {
+    fetch(API)
+    .then((res) => res.json())
+    .then((data) => {
+      setMovies(data.results);
+    })
+  } 
+  
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+
+    if(searchTerm){
+      getMovies(SEARCH_API+ searchTerm);
+      
+      setSearchTerm('');
+    }
+    
+
+  }
+
+  const handleOnChange= (e) => {
+    setSearchTerm(e.target.value);
+  }
+
+  return ( <React.Fragment> 
+    {/* normal <> and <React.Fragment are same> */}
+    <nav>
+      <h1 className="brand">V tv</h1>
+    </nav>
+    <header>
+      <form onSubmit={handleOnSubmit}>
+        <input className="search" 
+        type="search" 
+        placeholder="Search..."
+        value={searchTerm}
+        onChange={handleOnChange}
+        />
+      </form>
+       
+    </header>
+    <div className="movie-container">
+      {movies.length > 0 && 
+      movies.map((movie) => 
+        <Movie key={movie.id} 
+        {...movie} />)
       }
     </div>
+    </React.Fragment>
   );
 }
 
