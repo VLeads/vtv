@@ -1,10 +1,16 @@
 import React, { Fragment, useEffect, useState } from "react";
 
 import Movie from './components/Movie';
+// require('dotenv').config();
 
-const FEATURED_API =  "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=b07d0ec21b43ab79d7de58082a0b48c8&page=1";
+// console.log(process.env.REACT_APP_API_KEY);
+// no need to install dotenv, redactjs already comes with it
 
-const SEARCH_API = "https://api.themoviedb.org/3/search/movie?&api_key=b07d0ec21b43ab79d7de58082a0b48c8&query=";
+const api_key = process.env.REACT_APP_API_KEY;
+const FEATURED_API =  `https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=${api_key}&page=1`;
+
+
+const SEARCH_API = `https://api.themoviedb.org/3/search/movie?&api_key=${api_key}&query=`;
 
 function App() {
   const [ movies, setMovies ] = useState([]);
