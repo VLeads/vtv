@@ -1,10 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 
 import Movie from './components/Movie';
-// require('dotenv').config();
 
-// console.log(process.env.REACT_APP_API_KEY);
-// no need to install dotenv, redactjs already comes with it
 
 const api_key = process.env.REACT_APP_API_KEY;
 const FEATURED_API =  `https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=${api_key}&page=1`;
